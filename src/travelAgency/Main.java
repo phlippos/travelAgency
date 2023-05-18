@@ -1,15 +1,21 @@
 package travelAgency;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.*;  
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
     	//Mitarbeiter[] mitarbeiter = new Mitarbeiter[100];
        // Kunde[] kunden = new Kunde[100];
     	ArrayList<Mitarbeiter> mitarbeiter = new ArrayList<Mitarbeiter>();
     	ArrayList<Kunde> kunden = new ArrayList<Kunde>();
+    	ArrayList<Reisepaket> rpaket = new ArrayList<Reisepaket>();
         int mitarbeiterzahl = 0;
         int kundezahl = 0;
         
@@ -26,59 +32,44 @@ public class Main {
           System.out.println("  4- Kunde hinzufuegen");
           System.out.println("  5- Kunden auflisten");
           System.out.println(" 	6- Kunde suchen");
+          System.out.println("  7- Reisepaket hinzufuegen");
+          System.out.println("  8- Alle Reisepakete auflisten");
+          System.out.println("  9- Reisepaket suchen");
+          System.out.println("  10- Reisepaketpreis aendern");
           System.out.println("  100 - Programm beenden");
-
+          try {
           operation = sc.nextInt();sc.nextLine();
-          if (operation == 1) {
-              /* To do:
-              a) Fragen Sie den Benutzer nach den Mitarbeiterinformationen
-              b) Lesen Sie die Information mit sc.nextLine() und wenn notwendig mit sc.nextInt() ein
-              c) Erstellen Sie eine Instanz Ihrer Klasse "Mitarbeiter" mit diesen Informationen
-              c) Speichern Sie diese Instanz in das Array mitarbeiter */
-        	  boolean checkBuergerID=true;
+          }catch(InputMismatchException e ) {
+        	  System.out.println("Bitte geben Sie eine gueltige Option ein");
+          }
+          if (operation == 1) {             
+        	  //boolean checkBuergerID=true;
         	  System.out.println("Geben Sie bitte ihre TC-Nummer ein");
         	  String BuergerID = sc.nextLine(); 
-        	  if(Person.checkBuergerID(BuergerID)) {		// BUergerID überprüfen
-        		/*for(int i = 0 ; i<mitarbeiterzahl ; ++i) {
-        			if(mitarbeiter[i].equals(BuergerId) == false) {
-        				checkBuergerID=false;
-        				break;
-        			}
-        		}*/
-        		Mitarbeiter m1 = new Mitarbeiter(BuergerID);
-        		if(!mitarbeiter.contains(m1)) {
-	        		System.out.println("Geben Sie bitte ihren Namen ein");
-	                String name = sc.nextLine();
-	                System.out.println("Geben Sie bitte ihren Nachnamen ein");
-	                String surname = sc.nextLine();
-	                if(Person.checkName(name) && Person.checkNachName(surname)) {
-		                Mitarbeiter m = new Mitarbeiter(Integer.toString(mitarbeiterzahl),BuergerID,name,surname);
-		                mitarbeiter.add(m);
-		               // mitarbeiter[mitarbeiterzahl] = m;
-		                //mitarbeiterzahl++;
-	                }
-        		 }
-        	  }	  
-          } else if (operation == 2) {
-              /* To do: Geben Sie BuergerID, Name und Nachname aller gespeicherten Mitarbeiter auf dem Bildschirm aus*/
-        	 /* for(int i = 0; i<mitarbeiterzahl; i++) {
-        		System.out.println(mitarbeiter[i]);
-        		  
-        	  }*/
+        	  try {
+	        	  if(Person.checkBuergerID(BuergerID)) {		// BUergerID überprüfen	        		
+	        		Mitarbeiter m1 = new Mitarbeiter(BuergerID);
+	        		if(!mitarbeiter.contains(m1)) {
+		        		System.out.println("Geben Sie bitte ihren Namen ein");
+		                String name = sc.nextLine();
+		                System.out.println("Geben Sie bitte ihren Nachnamen ein");
+		                String surname = sc.nextLine();
+		                if(Person.checkName(name) && Person.checkNachName(surname)) {
+			                Mitarbeiter m = new Mitarbeiter(Integer.toString(mitarbeiterzahl),BuergerID,name,surname);
+			                mitarbeiter.add(m);		
+		                }
+	        		 }
+	        	  }
+        	  }catch(FalschBuergerIDException e) {
+        		  System.out.println(e);
+        	  }
+          } else if (operation == 2) {             
         	  mitarbeiter.forEach((n) -> {
         		  System.out.println(n);
         	  });
           } else if(operation == 3){
         	  System.out.println("Geben Sie bitte BuergerID ein.");
-        	  String BuergerID = sc.nextLine();
-      		/*for(int i = 0; i<mitarbeiterzahl;i++) {
-        		  if(BuergerID.equals(mitarbeiter[i].getBuergerID())) {
-        			  exist = true;
-        			  System.out.println("Name : "+ mitarbeiter[i].getName());
-        			  System.out.println("Nachname : " +mitarbeiter[i].getSurname());
-        			  break;
-        		  }
-        	  }*/
+        	  String BuergerID = sc.nextLine();     		
         	  Mitarbeiter m1 = new Mitarbeiter(BuergerID);
         	  if(mitarbeiter.contains(m1)) {
         		  System.out.println("Name : "+ mitarbeiter.get(mitarbeiter.indexOf(m1)).getName());
@@ -86,56 +77,35 @@ public class Main {
         	  }
         	  else{
       			System.out.println("Person konnte nicht gefunden werden");
-      		  }
-        	  
-          } else if (operation == 4) {
-              /* To do:
-              a) Fragen Sie den Benutzer nach den Kundeninformationen
-              b) Lesen Sie die Information mit sc.nextLine() und wenn notwendig mit sc.nextInt() ein
-              c) Erstellen Sie eine Instanz Ihrer Klasse "Kunde" mit diesen Informationen
-              d) Speichern Sie diese Instanz in das Array kunden*/
-        	  boolean checkBuergerIDK = true;
+      		  }        	  
+          } else if (operation == 4) {            
+        	  //boolean checkBuergerIDK = true;
         	  System.out.println("Geben Sie bitte ihre BuergerID ein.");
         	  String BuergerIDK = sc.nextLine();
-        	  if(Person.checkBuergerID(BuergerIDK)) {
-        		  /*for(int i = 0; i<kundezahl; i++) { // BUergerID überprüfen
-        			  if(kunden[i].equals(BuergerIDK) == false) {
-        				  checkBuergerIDK = false;
-        				  break;
-        			  }
-        			  
-        		  }*/
-        		  Kunde k1 = new Kunde(BuergerIDK);
-        		  if(!kunden.contains(k1)) {
-	          	      System.out.println("Geben Sie bitte ihren Namen ein");
-	                  String name = sc.nextLine();
-	                  System.out.println("Geben Sie bitte ihren Nachnamen ein");
-	                  String surname = sc.nextLine();
-	                  if(Person.checkName(name) && Person.checkNachName(surname)) {
-		            	  Kunde k = new Kunde(Integer.toString(kundezahl),name,surname,BuergerIDK);
-		            	  kunden.add(k);
-		            	 // kunden[kundezahl] = k;
-		            	 // kundezahl++;
-	            	  }
-        		  }  
+        	  try {
+	        	  if(Person.checkBuergerID(BuergerIDK)) {     		  
+	        		  Kunde k1 = new Kunde(BuergerIDK);
+	        		  if(!kunden.contains(k1)) {
+		          	      System.out.println("Geben Sie bitte ihren Namen ein");
+		                  String name = sc.nextLine();
+		                  System.out.println("Geben Sie bitte ihren Nachnamen ein");
+		                  String surname = sc.nextLine();
+		                  if(Person.checkName(name) && Person.checkNachName(surname)) {
+			            	  Kunde k = new Kunde(Integer.toString(kundezahl),name,surname,BuergerIDK);
+			            	  kunden.add(k);		            	
+		            	  }
+	        		  }  
+	        	  }
+        	  }catch(FalschBuergerIDException e) {
+        		  System.out.println(e);
         	  }
           } else if (operation == 5) {
-              /* To do: Geben Sie BuergerID, Name und Nachname aller gespeicherten Kunden auf dem Bildschirm aus*/
         	  kunden.forEach((n)->{
         		  System.out.println(n);
         	  });
           }else if(operation == 6){
         	  System.out.println("Geben Sie bitte BuergerID ein.");
         	  String BuergerIDK = sc.nextLine();
-        	  
-      		 /* for(int i = 0; i<kundezahl;i++) {
-        		  if(BuergerID.equals(kunden[i].getBuergerID())) {
-        			  exist = true;
-        			  System.out.println("Name : "+ kunden[i].getName());
-        			  System.out.println("Nachname : " +kunden[i].getSurname());
-        			  break;
-        		  }
-        	  }*/
         	  Kunde k1 = new Kunde(BuergerIDK);
         	  if(kunden.contains(k1)) {
         		  System.out.println("Name : "+ kunden.get(kunden.indexOf(k1)).getName());
@@ -143,10 +113,45 @@ public class Main {
         	  }
         	  else{
       			System.out.println("Person konnte nicht gefunden werden");
-      		  }
-        	  
-        	  
-          }       
+      		  }       	  	  
+          }else if(operation == 7) {
+        	  System.out.println("Wohin?");
+        	  String destination = sc.nextLine();
+        	  System.out.println("Wann(dd/mm/yyyy)");
+        	  SimpleDateFormat date ;       	  
+			  date = new SimpleDateFormat(sc.nextLine());
+        	  System.out.println("Wie viel Tag?");
+        	  int dauer = sc.nextInt();
+        	  System.out.println("Wie viel kostet die Reissepaket");
+        	  float preis = sc.nextFloat();
+        	  Reisepaket reisepaket = new Reisepaket(Integer.toString(rpaket.size()),destination,date,dauer,preis);
+        	  rpaket.add(reisepaket);
+          }else if(operation == 8) {
+        	  rpaket.forEach(
+        			  (n) -> {
+        				  System.out.println("********************");
+        				  System.out.println(n);
+        				  System.out.println("********************");
+        			  }
+        			  );
+          }else if(operation == 9) {
+        	  System.out.println("Geben Sie PaketID ein : ");
+        	  String reisepaketID = sc.nextLine();
+        	  Reisepaket reisepaket = new Reisepaket(reisepaketID);
+        	  if(rpaket.contains(reisepaket)) {
+        		  System.out.println(rpaket.get(rpaket.indexOf(reisepaket)));
+        	  }
+          }else if(operation == 10) {
+        	  System.out.println("Geben Sie PaketID ein : ");
+        	  String reisepaketID = sc.nextLine();
+        	  Reisepaket reisepaket = new Reisepaket(reisepaketID);
+        	  if(rpaket.contains(reisepaket)) {
+        		  System.out.println("Neuer Preis : ");
+        		  float preis = sc.nextFloat();
+        		  rpaket.get(rpaket.indexOf(reisepaket)).setPreis(preis);
+        		  System.out.println(rpaket.get(rpaket.indexOf(reisepaket)));
+        	  }
+          }
         }                                           
     }
 }

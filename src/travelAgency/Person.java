@@ -88,12 +88,11 @@ public abstract class Person {
 		return value;
 	}
 	
-	public static boolean checkBuergerID(String BuergerID) {
+	public static boolean checkBuergerID(String BuergerID) throws FalschBuergerIDException {
 		if(Pattern.matches("\\d{7}", BuergerID)) {
 			return true;
 		}else {
-			System.out.println("falsche BuergerID");
-			return false;
+			throw new FalschBuergerIDException("falsche BuergerID");
 		}
 	} 
 	
