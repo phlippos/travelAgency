@@ -117,12 +117,12 @@ public class Main {
           }else if(operation == 7) {
         	  System.out.println("Wohin?");
         	  String destination = sc.nextLine();
-        	  System.out.println("Wann(dd/mm/yyyy)");
+        	  System.out.println("Wann(dd/mm/yyyy)?");
         	  SimpleDateFormat date ;       	  
 			  date = new SimpleDateFormat(sc.nextLine());
-        	  System.out.println("Wie viel Tag?");
+        	  System.out.println("Wie viele Tage?");
         	  int dauer = sc.nextInt();
-        	  System.out.println("Wie viel kostet die Reissepaket");
+        	  System.out.println("Wie viel kostet die Reissepaket?");
         	  float preis = sc.nextFloat();
         	  Reisepaket reisepaket = new Reisepaket(Integer.toString(rpaket.size()),destination,date,dauer,preis);
         	  rpaket.add(reisepaket);
@@ -140,6 +140,8 @@ public class Main {
         	  Reisepaket reisepaket = new Reisepaket(reisepaketID);
         	  if(rpaket.contains(reisepaket)) {
         		  System.out.println(rpaket.get(rpaket.indexOf(reisepaket)));
+        	  }else {
+        		  System.out.println("Paket konnte nicht gefunden werden.");
         	  }
           }else if(operation == 10) {
         	  System.out.println("Geben Sie PaketID ein : ");
@@ -150,6 +152,8 @@ public class Main {
         		  float preis = sc.nextFloat();
         		  rpaket.get(rpaket.indexOf(reisepaket)).setPreis(preis);
         		  System.out.println(rpaket.get(rpaket.indexOf(reisepaket)));
+        	  }else {
+        		  System.out.println("Paket konnte nicht gefunden werden.");
         	  }
           }
         }                                           
