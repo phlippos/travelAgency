@@ -11,6 +11,9 @@ public abstract class Person {
     private String city;
     private String address;
     
+    public Person() {
+    	
+    }
     public Person(String BuergerID) {
     	this.BuergerID =BuergerID;
     }
@@ -31,19 +34,25 @@ public abstract class Person {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		if(checkName(name)) {
+			this.name = name;
+		}
 	}
 	public String getSurname() {
 		return surname;
 	}
 	public void setSurname(String surname) {
-		this.surname = surname;
+		if(checkSurname(surname)){
+			this.surname = surname;
+		}
 	}
 	public String getBuergerID() {
 		return BuergerID;
 	}
 	public void setBuergerID(String BuergerID) {
-		this.BuergerID = BuergerID;
+		if(checkBuergerID(BuergerID)) {
+			this.BuergerID = BuergerID;
+		}
 	}
 	public String getPhonenumber() {
 		return phonenumber;
@@ -71,9 +80,9 @@ public abstract class Person {
 	}
     
 	public abstract String toString();		//abstract method toString from Object class
-	
-	public boolean equals(Object obj) {
-		boolean value  = false; //equals mehod from Object class
+	@Override
+	public boolean equals(Object obj)  {
+		boolean value  = false; //equals method from Object class
 		if(obj instanceof Mitarbeiter) {
 			Mitarbeiter mitarbeiter = (Mitarbeiter)obj;
 			if(this.BuergerID.compareTo(mitarbeiter.getBuergerID()) == 0) {
@@ -92,28 +101,31 @@ public abstract class Person {
 		if(Pattern.matches("\\d{7}", BuergerID)) {
 			return true;
 		}else {
-			throw new FalschBuergerIDException("falsche BuergerID");
+			throw new FalschBuergerIDException("falsche BuergerID. Die Länge von BuergerID muss 7 sein!");
 		}
 	} 
 	
-	public static boolean checkName(String name) {
-		if(Pattern.matches("([a-zA-Z]*\\.*\\s*)*", name) && name.length()>=2) {
-			return true;
+	public static boolean checkName(String name) throws FalschNameException {
+		if(name.length()>=2) {
+			if(Pattern.matches("([a-zA-Z]*\\.*\\s*)*", name)) {
+				return true;
+			}else {
+				throw new FalschNameException("Der Name enthält ungültige Buchstaben!");
+			}
 		}else {
-			System.out.println("Falsche Name");
-			return false;
+			throw new FalschNameException("Die Lange vom Namen muss größer als 1 sein!");
 		}
 	}
 	
-	public static boolean checkNachName(String nachname) {
-		if(Pattern.matches("[a-zA-Z]*",nachname) && nachname.length()>=2) {
-			return true;
+	public static boolean checkSurname(String surname) throws FalschSurnameException{
+		if(surname.length()>=2) {
+			if(Pattern.matches("[a-zA-Z]*",surname)) {
+				return true;
+			}else {
+				throw new FalschSurnameException("Der Nachname kann nur aus Buchstaben bestehen!");
+			}
 		}else {
-			System.out.println("Falsche Nachname");
-			return false;
+			throw new FalschSurnameException("Die Länge vom Nachnamen muss größer als 1 sein!");
 		}
 	}
-	
-
-    
 }

@@ -4,8 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reisepaket {
-	/*Erzeugen Sie dazu eine neue Klasse Reisepaket.
-	java mit mindestens folgenden Attributen: PaketID, Destination, Datum, Dauer und Preis.*/
+	
 	private String paketID;
 	private String destination;
 	private SimpleDateFormat datum;

@@ -36,6 +36,8 @@ public class Main {
           System.out.println("  8- Alle Reisepakete auflisten");
           System.out.println("  9- Reisepaket suchen");
           System.out.println("  10- Reisepaketpreis aendern");
+          System.out.println("  11- Reisepaket an Kunden verkaufen");
+          System.out.println("  12- Alle Reisepakete eines Kunden auflisten");
           System.out.println("  100 - Programm beenden");
           try {
           operation = sc.nextInt();sc.nextLine();
@@ -43,25 +45,30 @@ public class Main {
         	  System.out.println("Bitte geben Sie eine gueltige Option ein");
           }
           if (operation == 1) {             
-        	  //boolean checkBuergerID=true;
+        	  
         	  System.out.println("Geben Sie bitte ihre TC-Nummer ein");
         	  String BuergerID = sc.nextLine(); 
         	  try {
-	        	  if(Person.checkBuergerID(BuergerID)) {		// BUergerID überprüfen	        		
+	        	  if(Person.checkBuergerID(BuergerID)) {		// if BUergerID is enough long(7) ,than true         		
 	        		Mitarbeiter m1 = new Mitarbeiter(BuergerID);
 	        		if(!mitarbeiter.contains(m1)) {
 		        		System.out.println("Geben Sie bitte ihren Namen ein");
 		                String name = sc.nextLine();
 		                System.out.println("Geben Sie bitte ihren Nachnamen ein");
 		                String surname = sc.nextLine();
-		                if(Person.checkName(name) && Person.checkNachName(surname)) {
+		                if(Person.checkName(name) && Person.checkSurname(surname)) {
+		                	 // Name and Surname must contain only alphabetic characters and must be longer than 1. 
 			                Mitarbeiter m = new Mitarbeiter(Integer.toString(mitarbeiterzahl),BuergerID,name,surname);
 			                mitarbeiter.add(m);		
 		                }
 	        		 }
 	        	  }
-        	  }catch(FalschBuergerIDException e) {
+        	  }catch(FalschBuergerIDException e) { 
         		  System.out.println(e);
+        	  }catch(FalschNameException msg) {
+        		  System.out.println(msg);
+        	  }catch(FalschSurnameException msg) {
+        		  System.out.println(msg);
         	  }
           } else if (operation == 2) {             
         	  mitarbeiter.forEach((n) -> {
@@ -79,7 +86,7 @@ public class Main {
       			System.out.println("Person konnte nicht gefunden werden");
       		  }        	  
           } else if (operation == 4) {            
-        	  //boolean checkBuergerIDK = true;
+        	 
         	  System.out.println("Geben Sie bitte ihre BuergerID ein.");
         	  String BuergerIDK = sc.nextLine();
         	  try {
@@ -90,7 +97,8 @@ public class Main {
 		                  String name = sc.nextLine();
 		                  System.out.println("Geben Sie bitte ihren Nachnamen ein");
 		                  String surname = sc.nextLine();
-		                  if(Person.checkName(name) && Person.checkNachName(surname)) {
+		                  if(Person.checkName(name) && Person.checkSurname(surname)) {
+		                	  // Name and Surname must contain only alphabetic characters and must be longer than 1. 
 			            	  Kunde k = new Kunde(Integer.toString(kundezahl),name,surname,BuergerIDK);
 			            	  kunden.add(k);		            	
 		            	  }
@@ -98,6 +106,10 @@ public class Main {
 	        	  }
         	  }catch(FalschBuergerIDException e) {
         		  System.out.println(e);
+        	  }catch(FalschNameException msg) {
+        		  System.out.println(msg);
+        	  }catch(FalschSurnameException msg) {
+        		  System.out.println(msg);
         	  }
           } else if (operation == 5) {
         	  kunden.forEach((n)->{
@@ -155,7 +167,38 @@ public class Main {
         	  }else {
         		  System.out.println("Paket konnte nicht gefunden werden.");
         	  }
+          }else if(operation == 11) {
+        	  System.out.println("Geben Sie Ihre BuergerID ein : ");
+        	  String BuergerID = sc.nextLine();
+        	  Kunde kunde1 = new Kunde(BuergerID);
+        	  System.out.println("Geben Sie die ReisepaketID ein : ");
+        	  String reisepaketID = sc.nextLine();
+        	  Reisepaket reisepaket1 = new Reisepaket(reisepaketID);
+        	  if(kunden.contains(kunde1)) {
+        		  if(rpaket.contains(reisepaket1)) {
+        			  kunden.get(kunden.indexOf(kunde1)).getReisepaket().add(rpaket.get(rpaket.indexOf(reisepaket1)));
+        			  System.out.println("Reisepaket wurde erfolgreich hinzugefügt.");
+        		  }else {
+        			  System.out.println("Paket konnte nicht gefunden werden.");
+        		  }
+        	  }else {
+        		  System.out.println("Person konnte nicht gefunden werden.");
+        	  }
+          }else if(operation == 12) {
+        	  System.out.println("Geben Sie Ihre BuergerID ein : ");
+        	  String BuergerID = sc.nextLine();
+        	  Kunde kunde1 = new Kunde(BuergerID);
+        	  if(kunden.contains(kunde1)) {
+        		  kunden.get(kunden.indexOf(kunde1)).getReisepaket().forEach(
+        				  (n) -> {
+        					  System.out.println(n);
+        				  });
+        	  }else {
+        		  System.out.println("Person konnte nicht gefunden werden.");
+        	  }
+        	  
           }
+          
         }                                           
     }
 }
